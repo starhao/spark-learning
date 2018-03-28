@@ -77,6 +77,7 @@ object ReaderCSV {
     //免学费-贫困人口比对
     println(finalResult.count())
 
+    //TODO:写入CSV待完成
     finalResult.map(data => List("1","23","sd").toArray)
       .mapPartitions { data =>
         val stringWriter = new StringWriter()
