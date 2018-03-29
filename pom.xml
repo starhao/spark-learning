@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ch.leaningSpark</groupId>
-    <artifactId>com.ch.leaningSpark</artifactId>
+    <groupId>com.ch.leaning_spark</groupId>
+    <artifactId>com.ch.leanin_spark</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 
@@ -40,6 +40,11 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_${scala.version}</artifactId>
             <version>${spark.version}</version>
+        </dependency>
+        <dependency> <!-- Jetty demmo -->
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+            <version>8.1.14.v20131031</version>
         </dependency>
 
     </dependencies>
