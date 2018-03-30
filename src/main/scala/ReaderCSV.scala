@@ -1,10 +1,14 @@
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import java.io.{StringReader, StringWriter}
+
 import au.com.bytecode.opencsv.CSVReader
 import au.com.bytecode.opencsv.CSVWriter
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.{FileSystem, FileUtil, Path}
 
 object ReaderCSV {
+
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setMaster("local").setAppName("readCSV");
     val sc = new SparkContext(conf);
@@ -78,16 +82,36 @@ object ReaderCSV {
     println(finalResult.count())
 
     //TODO:写入CSV待完成
-    finalResult.map(data => List("1","23","sd").toArray)
-      .mapPartitions { data =>
-        val stringWriter = new StringWriter()
-        val csvWriter = new CSVWriter(stringWriter)
-//        csvWriter.writeAll()
-        Iterator(stringWriter.toString)
-      }.saveAsTextFile("./out.csv")
+    //    finalResult.map(data => {
+    //      List(data).toArray
+    //    }).mapPartitions { data =>
+    //      val stringWriter = new StringWriter()
+    //      val csvWriter = new CSVWriter(stringWriter)
+    //      csvWriter.writeAll(data.toList)
+    //      Iterator(stringWriter.toString)
+    //    }.saveAsTextFile("./out.csv")
+
+    val stringArrResult = finalResult.map(it => {
+      var lines = ""
+      it.foreach(ele => {
+        lines += s"${ele},"
+      })
+      //      lines.slice(0, line.length - 1)
+      lines.dropRight(1) //去掉最后一个","
+    })
+
+    stringArrResult.saveAsTextFile("./out")
+    merge("./out","./out.csv")
+    //    stringArrResult.foreach(println(_))
 
     println(s"taking: ${(System.currentTimeMillis() - t1).doubleValue() / 1000}s")
 
+  }
+
+  def merge(srcPath: String, distPath: String) = {
+    val hadoopConfig = new Configuration()
+    val hdfs = FileSystem.get(hadoopConfig)
+    FileUtil.copyMerge(hdfs, new Path(srcPath), hdfs, new Path(distPath), false, hadoopConfig, null)
   }
 
 }
