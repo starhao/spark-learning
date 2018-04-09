@@ -46,6 +46,11 @@
             <artifactId>jetty-client</artifactId>
             <version>8.1.14.v20131031</version>
         </dependency>
+        <dependency><!--jdbc-->
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.12</version>
+        </dependency>
 
     </dependencies>
 
